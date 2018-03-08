@@ -47,10 +47,14 @@ class Unledge
     return MASTODON_PATTERN.match(url)
   end
 
+  def strip_tags(text)
+    return text.gsub(/(<[^>]*>|\r|\n)/, ' ')
+  end
+
   def scrape_toot(doc)
     begin
       # TODO: CW text
-      return "Toot: #{doc.css('div[class="entry entry-center"]').css('div[class="e-content"]').inner_text}"
+      return strip_tags("Toot: #{doc.css('div[class="entry entry-center"]').css('div[class="e-content"]').inner_html}")
     rescue => error
       puts "Error scraping content from toot: #{error}"
     end
@@ -61,7 +65,7 @@ class Unledge
   def scrape_tweet(doc)
     begin
       # FIXME: This class might be fragile
-      return "Tweet: #{doc.css('p[class="TweetTextSize TweetTextSize--jumbo js-tweet-text tweet-text"]')[0].inner_text}"
+      return strip_tags("Tweet: #{doc.css('p[class="TweetTextSize TweetTextSize--jumbo js-tweet-text tweet-text"]')[0].inner_html}")
     rescue => error
       puts "Error scraping content from tweet: #{error}"
     end
@@ -121,10 +125,11 @@ if (__FILE__ == $0)
 
     def test_scrape
       tests = [
-          [ 'test/tweet.html', :scrape_tweet, 'Tweet: feeldog dedass forgot how 내꺼 sounds like for a moment but he did the vocals dance rap wow wat a tru leaderpic.twitter.com/e11N2tNUQ0' ],
-          [ 'test/toot.html', :scrape_toot, 'Toot: My kids are obsessed with stroopwafels. I guess these things happen.' ],
+          [ 'test/tweet.html', :scrape_tweet, 'Tweet: feeldog dedass forgot how 내꺼 sounds like for a moment but he did the vocals dance rap wow wat a tru leader pic.twitter.com/e11N2tNUQ0 ' ],
+          [ 'test/toot.html', :scrape_toot, 'Toot:  My kids are obsessed with stroopwafels. I guess these things happen. ' ],
           [ 'test/tweet_series.html', :scrape_tweet, 'Tweet: Cool looking student project that would probably get you a D in a games class and a cease and desist from Nintendo.' ],
-          [ 'test/toot_series.html', :scrape_toot, 'Toot: I have to log off now, for several years.' ],
+          [ 'test/toot_series.html', :scrape_toot, 'Toot:  I have to log off now, for several years. ' ],
+          [ 'test/tweet_multiline.html', :scrape_tweet, 'Tweet: Scott Baio is now boycotting Dick’s Sporting Goods due to their ban on Simi-automatic weapons   Dick’s Sporting Goods had to call in a replacement cashier to fill in for Scott pic.twitter.com/1AgJonovn7 ']
       ]
 
       tests.each { |test|
