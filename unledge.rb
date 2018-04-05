@@ -11,6 +11,7 @@
 
 require 'nokogiri'
 require 'open-uri'
+require 'json'
 
 require_relative 'shortbus'
 require_relative 'urika'
@@ -56,7 +57,24 @@ class Unledge
   def scrape_toot(doc)
     begin
       # TODO: CW text
-      return "Toot: #{doc.css('div[class="entry entry-center"]').css('div[class="e-content"]').inner_text}"
+      toot = doc.css('div[class="entry entry-center"]')
+      text_content = toot.css('div[class="e-content"]').inner_text
+      media_gallery = toot.css('div[data-component="MediaGallery"]')
+      unless media_gallery.empty?
+        begin
+          media = JSON.parse(media_gallery[0].attributes['data-props'].value)
+          media_content = if media['media'][0]['description']
+                            "(#{media['media'][0]['description']}: #{media['media'][0]['text_url']} )"
+                          else
+                            "( #{media['media'][0]['text_url']} )"
+                          end
+        rescue => error
+          puts "Error scraping media from toot: #{error}\n#{media}"
+        end
+      end
+
+      return "Toot: #{text_content} #{media_content}" if media_content
+      return "Toot: #{text_content}"
     rescue => error
       puts "Error scraping content from toot: #{error}"
     end
@@ -132,7 +150,8 @@ if (__FILE__ == $0)
           [ 'test/tweet_series.html', :scrape_tweet, 'Tweet: Cool looking student project that would probably get you a D in a games class and a cease and desist from Nintendo.' ],
           [ 'test/toot_series.html', :scrape_toot, 'Toot: I have to log off now, for several years.' ],
           [ 'test/tweet_multiline.html', :scrape_tweet, 'Tweet: Scott Baio is now boycotting Dick’s Sporting Goods due to their ban on Simi-automatic weapons   Dick’s Sporting Goods had to call in a replacement cashier to fill in for Scott pic.twitter.com/1AgJonovn7'],
-          [ 'test/toot_ellipsized.html', :scrape_toot, 'Toot: Oh.  you would like me to test your application and write bug reports? *cracks knuckles*😈 You bet. https://cybre.space/media/LZMBWEgkic332LmLxCc' ],
+          [ 'test/toot_ellipsized.html', :scrape_toot, 'Toot: Oh.  you would like me to test your application and write bug reports? *cracks knuckles*😈 You bet. https://cybre.space/media/LZMBWEgkic332LmLxCc (Scene from Death note, dramatically writing and eating chips: https://cybre.space/media/LZMBWEgkic332LmLxCc )' ],
+          [ 'test/toot_pic.html', :scrape_toot, 'Toot: . ( https://mastodon.technology/media/L_TldXxzfh8IRyfepBE )' ],
       ]
 
       tests.each { |test|
