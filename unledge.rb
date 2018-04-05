@@ -13,7 +13,6 @@ require 'nokogiri'
 require 'open-uri'
 require 'json'
 
-require_relative 'shortbus'
 require_relative 'urika'
 
 class Unledge
