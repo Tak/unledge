@@ -54,6 +54,7 @@ class Unledge
   end
 
   def scrape_toot(doc)
+    content = nil
     begin
       # TODO: CW text
       toot = doc.css('div[class="entry entry-center"]')
@@ -72,13 +73,18 @@ class Unledge
         end
       end
 
-      return "Toot: #{text_content} #{media_content}" if media_content
-      return "Toot: #{text_content}"
+      content = if media_content && !media_content.chomp().empty?
+        "Toot: #{text_content} #{media_content}"
+      elsif text_content && !text_content.chomp().empty?
+        "Toot: #{text_content}"
+      else
+        nil
+      end
     rescue => error
       puts "Error scraping content from toot: #{error}"
     end
 
-    return nil
+    return content
   end
 
   def scrape_tweet(doc)
@@ -151,6 +157,7 @@ if (__FILE__ == $0)
           [ 'test/tweet_multiline.html', :scrape_tweet, 'Tweet: Scott Baio is now boycotting Dick’s Sporting Goods due to their ban on Simi-automatic weapons   Dick’s Sporting Goods had to call in a replacement cashier to fill in for Scott pic.twitter.com/1AgJonovn7'],
           [ 'test/toot_ellipsized.html', :scrape_toot, 'Toot: Oh.  you would like me to test your application and write bug reports? *cracks knuckles*😈 You bet. https://cybre.space/media/LZMBWEgkic332LmLxCc (Scene from Death note, dramatically writing and eating chips: https://cybre.space/media/LZMBWEgkic332LmLxCc )' ],
           [ 'test/toot_pic.html', :scrape_toot, 'Toot: . ( https://mastodon.technology/media/L_TldXxzfh8IRyfepBE )' ],
+          [ 'test/medium_article.html', :scrape_toot, nil ],
       ]
 
       tests.each { |test|
