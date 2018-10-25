@@ -36,7 +36,12 @@ module Unledge
                 end
       return nil unless scraper
 
-      dump("https://#{url}") { |doc| return send(scraper, doc) }
+      dump("https://#{Unledge.normalize_url(url)}") { |doc| return send(scraper, doc) }
+    end
+
+    def self.normalize_url(url)
+      return url unless (Unledge.is_twitter_url(url))
+      return url.sub(/^mobile\./, '')
     end
 
     def self.is_twitter_url(url)
