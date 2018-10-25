@@ -11,34 +11,34 @@ RSpec.describe Unledge do
 
   it 'detects twitter urls' do
     uris = [
-        { 'http://twitter.com/foo/bar' => true },
-        { 'https://www.twitter.com/foo/bar' => true },
-        { 'https://mobile.twitter.com/foo/bar' => true },
-        { 'https://t.co/foo/bar' => true },
-        { 'https://gitt.co/foo/bar' => false },
-        { 'https://allatwitter.com/foo/bar' => false },
-        { 'https://nou.twitter.com/foo/bar' => false },
+        [ 'http://twitter.com/foo/bar', true ],
+        [ 'https://www.twitter.com/foo/bar', true ],
+        [ 'https://mobile.twitter.com/foo/bar', true ],
+        [ 'https://t.co/foo/bar', true ],
+        [ 'https://gitt.co/foo/bar', false ],
+        [ 'https://allatwitter.com/foo/bar', false ],
+        [ 'https://nou.twitter.com/foo/bar', false ],
     ]
 
     uris.each { |pair|
       url = Urika.get_first_url(pair[0])
       matched = Unledge::Unledge.is_twitter_url(url)
-      expect(matched).to eq(pair[1])
+      expect(!!matched).to eq(pair[1])
     }
   end
 
   it 'detects mastodon urls' do
     uris = [
-        { 'http://mastodon.social/@foo/bar' => true },
-        { 'https://wat.lgbt.io/@foo/bar' => true },
-        { 'https://joe:meh@foo.bar' => false },
-        { 'https://gitt.co/foo/@bar' => false },
+        [ 'http://mastodon.social/@foo/bar', true ],
+        [ 'https://wat.lgbt.io/@foo/bar', true ],
+        [ 'https://joe:meh@foo.bar', false ],
+        [ 'https://gitt.co/foo/@bar', false ],
     ]
 
     uris.each { |pair|
       url = Urika.get_first_url(pair[0])
       matched = Unledge::Unledge.is_mastodon_url(url)
-      expect(matched).to eq(pair[1])
+      expect(!!matched).to eq(pair[1])
     }
   end
 
