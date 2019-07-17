@@ -79,9 +79,12 @@ module Unledge
           end
         end
 
-        content = if media_content && !media_content.chomp().empty?
+        text_content.strip! if text_content
+        media_content.strip! if media_content
+
+        content = if media_content && !media_content.empty?
           "Toot: #{text_content} #{media_content}"
-        elsif text_content && !text_content.chomp().empty?
+        elsif text_content && !text_content.empty?
           "Toot: #{text_content}"
         else
           nil
