@@ -69,6 +69,7 @@ RSpec.describe Unledge do
         [ 'test/toot_pic.html', :scrape_toot, 'Toot: . ( https://mastodon.technology/media/L_TldXxzfh8IRyfepBE )' ],
         [ 'test/toot_begins_with_newline.html', :scrape_toot, 'Toot: a large bug fell on me ...upbeat sonic ost playlists will hopefully carry me through this fucking assignment (potentially the rest of the night, god)'],
         [ 'test/medium_article.html', :scrape_toot, nil ],
+        [ 'test/tweet_embedded_status.html', :scrape_tweet, 'Tweet: it’s lit https://twitter.com/daniel_kraft/status/1182472433963425793  …'],
     ]
 
     tests.each { |test|

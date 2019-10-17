@@ -24,6 +24,7 @@ module Unledge
 
     MASTODON_PATTERN = /[^\/]+\/@[^\/]+\//
     TWITTER_PIC_LINK_PATTERN = /([^\s\/])(pic.twitter.com)/
+    TWITTER_INVISIBLE_SPAN_PATTERN = /<span[^>]*>([^<]*)<\/span>/
 
     # Processes a statement
     # param text The text of the statement
@@ -55,6 +56,7 @@ module Unledge
     end
 
     def strip_tags(text)
+      text.gsub!(TWITTER_INVISIBLE_SPAN_PATTERN, '\1')
       text.gsub!(/(<[^>]*>|\r|\n)/, ' ')
       return text.gsub(TWITTER_PIC_LINK_PATTERN, '\1 \2')
     end
@@ -99,7 +101,7 @@ module Unledge
     def scrape_tweet(doc)
       begin
         # FIXME: This class might be fragile
-        return strip_tags("Tweet: #{doc.css('p[class="TweetTextSize TweetTextSize--jumbo js-tweet-text tweet-text"]')[0].inner_text}")
+        return strip_tags("Tweet: #{doc.css('p[class="TweetTextSize TweetTextSize--jumbo js-tweet-text tweet-text"]')[0].inner_html}").strip()
       rescue => error
         puts "Error scraping content from tweet: #{error}"
       end
