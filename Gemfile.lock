@@ -18,16 +18,16 @@ PATH
   specs:
     unledge (0.1.0)
       json
-      nokogiri
+      nokogiri (>= 1.10.4)
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.3)
-    json (2.1.0)
-    mini_portile2 (2.3.0)
-    nokogiri (1.8.4)
-      mini_portile2 (~> 2.3.0)
+    json (2.2.0)
+    mini_portile2 (2.4.0)
+    nokogiri (1.10.4)
+      mini_portile2 (~> 2.4.0)
     rake (10.5.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
@@ -56,4 +56,4 @@ DEPENDENCIES
   urika!
 
 BUNDLED WITH
-   1.16.4
+   1.17.3
