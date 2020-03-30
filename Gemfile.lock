@@ -1,15 +1,15 @@
 GIT
   remote: https://github.com/Tak/shortbus
-  revision: 8e3ca4dc806eca45793bddf528f0795e496982a9
-  branch: master
+  revision: 97d73b2cfcf5003f1c999ebdbe9fb5205a17759c
+  branch: trunk
   specs:
     shortbus (0.1.0)
       ruby-dbus
 
 GIT
   remote: https://github.com/Tak/urika
-  revision: 6611b0c7b3ac8c2d12619bddf8faffb898d7cecf
-  branch: master
+  revision: 716aeb67368a8809726d8e1436c1bd6bb08fd6df
+  branch: trunk
   specs:
     urika (0.1.0)
 
@@ -42,7 +42,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    ruby-dbus (0.15.0)
+    ruby-dbus (0.16.0)
 
 PLATFORMS
   ruby
