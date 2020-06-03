@@ -101,7 +101,9 @@ module Unledge
     def scrape_tweet(doc)
       begin
         # FIXME: This class might be fragile
-        return strip_tags("Tweet: #{doc.css('p[class="TweetTextSize TweetTextSize--jumbo js-tweet-text tweet-text"]')[0].inner_html}").strip()
+        element = doc.css('table.main-tweet tr td.tweet-content div.tweet-text')[0] ||
+          doc.css('p[class="TweetTextSize TweetTextSize--jumbo js-tweet-text tweet-text"]')[0]
+        return "Tweet: #{strip_tags(element.inner_html).strip()}"
       rescue => error
         puts "Error scraping content from tweet: #{error}"
       end

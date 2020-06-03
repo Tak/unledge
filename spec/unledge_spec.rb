@@ -70,6 +70,8 @@ RSpec.describe Unledge do
         [ 'test/toot_begins_with_newline.html', :scrape_toot, 'Toot: a large bug fell on me ...upbeat sonic ost playlists will hopefully carry me through this fucking assignment (potentially the rest of the night, god)'],
         [ 'test/medium_article.html', :scrape_toot, nil ],
         [ 'test/tweet_embedded_status.html', :scrape_tweet, 'Tweet: it’s lit https://twitter.com/daniel_kraft/status/1182472433963425793  …'],
+        [ 'test/tweet_embedded_video_format2.html', :scrape_tweet, 'Tweet: Kitteh tries ice cream.  pic.twitter.com/TZEEpzkEWq'],
+        [ 'test/tweet_multiline_format2.html', :scrape_tweet, 'Tweet: Last year, things were going well at Star Theory, the independent video game studio behind Kerbal Space Program 2.   Then Take-Two cancelled their contract and tried to poach all their staff on LinkedIn.  My first big story for Bloomberg is a wild one:  bloomberg.com/news/articles/…'],
     ]
 
     tests.each { |test|
