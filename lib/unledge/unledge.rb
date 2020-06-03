@@ -42,7 +42,7 @@ module Unledge
 
     def self.normalize_url(url)
       return url unless (Unledge.is_twitter_url(url))
-      return url.sub(/^mobile\./, '')
+      return url.sub(/^(www\.)?twitter/, 'mobile.twitter')
     end
 
     def self.is_twitter_url(url)

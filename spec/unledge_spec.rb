@@ -42,11 +42,11 @@ RSpec.describe Unledge do
     }
   end
 
-  it 'normalizes mobile twitter urls' do
+  it 'normalizes twitter urls' do
     uris = [
-        [ 'http://twitter.com/foo/bar', 'twitter.com/foo/bar' ],
-        [ 'https://www.twitter.com/foo/bar', 'twitter.com/foo/bar' ],
-        [ 'https://mobile.twitter.com/foo/bar', 'twitter.com/foo/bar' ],
+      [ 'http://twitter.com/foo/bar', 'mobile.twitter.com/foo/bar' ],
+      [ 'https://www.twitter.com/foo/bar', 'mobile.twitter.com/foo/bar' ],
+      [ 'https://mobile.twitter.com/foo/bar', 'mobile.twitter.com/foo/bar' ],
         [ 'https://t.co/foo/bar', 't.co/foo/bar' ],
         [ 'https://gitt.co/foo/bar', 'gitt.co/foo/bar' ],
         [ 'https://mobile.allatwitter.com/foo/bar', 'mobile.allatwitter.com/foo/bar' ],
