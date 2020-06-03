@@ -120,10 +120,3 @@ module Unledge
     end
   end
 end
-
-if (__FILE__ == $0)
-  require 'test/unit'
-
-  class UnledgeTest < Test::Unit::TestCase
-  end
-end
