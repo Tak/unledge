@@ -23,6 +23,7 @@ module Unledge
     ].freeze
 
     MASTODON_PATTERN = /[^\/]+\/@[^\/]+\//
+    PLEROMA_PATTERN = /[^\/]+\/(objects|notice)\/[-\w]+/
     TWITTER_PIC_LINK_PATTERN = /([^\s\/])(pic.twitter.com)/
     TWITTER_INVISIBLE_SPAN_PATTERN = /<span[^>]*>([^<]*)<\/span>/
 
@@ -34,6 +35,8 @@ module Unledge
                   :scrape_tweet
                 elsif (Unledge.is_mastodon_url(url))
                   :scrape_toot
+                elsif (Unledge.is_pleroma_url(url))
+                  :scrape_pleroma
                 end
       return nil unless scraper
 
@@ -55,10 +58,30 @@ module Unledge
       return MASTODON_PATTERN.match(url)
     end
 
+    def self.is_pleroma_url(url)
+      return PLEROMA_PATTERN.match(url)
+    end
+
     def strip_tags(text)
       text.gsub!(TWITTER_INVISIBLE_SPAN_PATTERN, '\1')
       text.gsub!(/(<[^>]*>|\r|\n)/, ' ')
       return text.gsub(TWITTER_PIC_LINK_PATTERN, '\1 \2')
+    end
+
+    def scrape_pleroma(doc)
+      content = nil
+      begin
+        post = doc.css('meta[property="twitter:description"]')[0]
+        content = post['content']
+      rescue => error
+        puts "Error scraping toot: #{error}"
+      end
+
+      if content
+        "Toot: #{content.strip}"
+      else
+        nil
+      end
     end
 
     def scrape_toot(doc)

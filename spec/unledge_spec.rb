@@ -42,6 +42,19 @@ RSpec.describe Unledge do
     }
   end
 
+  it 'detects pleroma urls' do
+    uris = [
+        [ 'https://fedi.underscore.world/objects/7fd24275-a3de-467f-b668-7955d1407295', true ],
+        [ 'https://fedi.underscore.world/notice/9wAz91mjkmMvBoVM2a', true ],
+    ]
+
+    uris.each { |pair|
+      url = Urika.get_first_url(pair[0])
+      matched = Unledge::Unledge.is_pleroma_url(url)
+      expect(!!matched).to eq(pair[1])
+    }
+  end
+
   it 'normalizes twitter urls' do
     uris = [
       [ 'http://twitter.com/foo/bar', 'mobile.twitter.com/foo/bar' ],
@@ -72,6 +85,8 @@ RSpec.describe Unledge do
         [ 'test/tweet_embedded_status.html', :scrape_tweet, 'Tweet: it’s lit https://twitter.com/daniel_kraft/status/1182472433963425793  …'],
         [ 'test/tweet_embedded_video_format2.html', :scrape_tweet, 'Tweet: Kitteh tries ice cream.  pic.twitter.com/TZEEpzkEWq'],
         [ 'test/tweet_multiline_format2.html', :scrape_tweet, 'Tweet: Last year, things were going well at Star Theory, the independent video game studio behind Kerbal Space Program 2.   Then Take-Two cancelled their contract and tried to poach all their staff on LinkedIn.  My first big story for Bloomberg is a wild one:  bloomberg.com/news/articles/…'],
+        [ 'test/toot_pleroma.html', :scrape_pleroma, "Toot: “People will tell you to eat a dick but they'll never attach any dick recipes”" ],
+        [ 'test/toot_pleroma_notice.html', :scrape_pleroma, "Toot: “People will tell you to eat a dick but they'll never attach any dick recipes”" ],
     ]
 
     tests.each { |test|
