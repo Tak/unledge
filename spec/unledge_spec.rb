@@ -87,6 +87,7 @@ RSpec.describe Unledge do
         [ 'test/tweet_multiline_format2.html', :scrape_tweet, 'Tweet: Last year, things were going well at Star Theory, the independent video game studio behind Kerbal Space Program 2.   Then Take-Two cancelled their contract and tried to poach all their staff on LinkedIn.  My first big story for Bloomberg is a wild one:  bloomberg.com/news/articles/…'],
         [ 'test/toot_pleroma.html', :scrape_pleroma, "Toot: “People will tell you to eat a dick but they'll never attach any dick recipes”" ],
         [ 'test/toot_pleroma_notice.html', :scrape_pleroma, "Toot: “People will tell you to eat a dick but they'll never attach any dick recipes”" ],
+        [ 'test/toot_pleroma_media.html', :scrape_pleroma, "Toot: “yo, we found schrödinger's cat” ( https://social.redxen.eu/media/fa533eff7f67a037822de8eb638d70952f65f19b4a1f651d20118e710bebc903.jpg )" ],
     ]
 
     tests.each { |test|

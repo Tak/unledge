@@ -70,15 +70,28 @@ module Unledge
 
     def scrape_pleroma(doc)
       content = nil
+      url = nil
       begin
         post = doc.css('meta[property="twitter:description"]')[0]
         content = post['content']
+        begin
+          # Try to scrape media
+          # TODO: description?
+          media = doc.css('meta[property="twitter:player"]')[0]
+          url = media['content']
+        rescue
+          # Unable to scrape media
+        end
       rescue => error
         puts "Error scraping toot: #{error}"
       end
 
       if content
-        "Toot: #{content.strip}"
+        if url
+          "Toot: #{content.strip} ( #{url.strip} )"
+        else
+          "Toot: #{content.strip}"
+        end
       else
         nil
       end
