@@ -57,10 +57,10 @@ RSpec.describe Unledge do
 
   it 'normalizes twitter urls' do
     uris = [
-      [ 'http://twitter.com/foo/bar', 'mobile.twitter.com/foo/bar' ],
-      [ 'https://www.twitter.com/foo/bar', 'mobile.twitter.com/foo/bar' ],
-      [ 'https://mobile.twitter.com/foo/bar', 'mobile.twitter.com/foo/bar' ],
-        [ 'https://t.co/foo/bar', 't.co/foo/bar' ],
+      [ 'http://twitter.com/foo/bar', 'publish.twitter.com/oembed?url=https://twitter.com/foo/bar' ],
+      [ 'https://www.twitter.com/foo/bar', 'publish.twitter.com/oembed?url=https://twitter.com/foo/bar' ],
+      [ 'https://mobile.twitter.com/foo/bar', 'publish.twitter.com/oembed?url=https://mobile.twitter.com/foo/bar' ],
+        [ 'https://t.co/foo/bar', 'publish.twitter.com/oembed?url=https://t.co/foo/bar' ],
         [ 'https://gitt.co/foo/bar', 'gitt.co/foo/bar' ],
         [ 'https://mobile.allatwitter.com/foo/bar', 'mobile.allatwitter.com/foo/bar' ],
     ]
@@ -92,6 +92,17 @@ RSpec.describe Unledge do
 
     tests.each { |test|
       expect(@unledge.dump(test[0]){ |doc| @unledge.send(test[1], doc)}).to eq(test[2])
+    }
+  end
+
+  it 'scrapes embedded tweets' do
+    tests = [
+      [ 'test/tweet_format3.json', :scrape_tweet_embed, 'Tweet: I really needed that. Thanks man. — WarPigeon (@JJWSCOTT)  June 3, 2020' ],
+      [ 'test/tweet_embedded_video_format3.json', :scrape_tweet_embed, 'Tweet: Kitteh tries ice cream.  pic.twitter.com/TZEEpzkEWq  — Frostbit Desert Frogger (@BT0731)  June 3, 2020' ],
+    ]
+
+    tests.each { |test|
+      expect(@unledge.dump_embed(test[0]){ |doc| @unledge.send(test[1], doc)}).to eq(test[2])
     }
   end
 end

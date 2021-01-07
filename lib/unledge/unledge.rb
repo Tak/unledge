@@ -12,6 +12,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'json'
+require 'cgi'
 
 require 'urika'
 
@@ -31,8 +32,9 @@ module Unledge
     # param text The text of the statement
     def process_statement(text)
       return nil unless (url = Urika.get_first_url(text))
-      scraper = if (Unledge.is_twitter_url(url))
-                  :scrape_tweet
+      is_twitter = Unledge.is_twitter_url(url)
+      scraper = if (is_twitter)
+                  :scrape_tweet_embed
                 elsif (Unledge.is_mastodon_url(url))
                   :scrape_toot
                 elsif (Unledge.is_pleroma_url(url))
@@ -40,12 +42,16 @@ module Unledge
                 end
       return nil unless scraper
 
-      dump("https://#{Unledge.normalize_url(url)}") { |doc| return send(scraper, doc) }
+      if (is_twitter)
+        dump_embed("https://#{Unledge.normalize_url(url)}") { |doc| return send(scraper, doc) }
+      else
+        dump("https://#{Unledge.normalize_url(url)}") { |doc| return send(scraper, doc) }
+      end
     end
 
     def self.normalize_url(url)
       return url unless (Unledge.is_twitter_url(url))
-      return url.sub(/^(www\.)?twitter/, 'mobile.twitter')
+      return "publish.twitter.com/oembed?url=https://#{url}"
     end
 
     def self.is_twitter_url(url)
@@ -147,11 +153,31 @@ module Unledge
       return nil
     end
 
+    def scrape_tweet_embed(doc)
+      begin
+        return "Tweet: #{strip_tags(doc.inner_html).strip()}"
+      rescue => error
+        puts "Error scraping content from tweet: #{error}"
+        # puts error.backtrace.join("\n")
+      end
+
+      return nil
+    end
+
     def dump(url)
       begin
         yield Nokogiri::HTML(open(url))
       rescue => error
         puts "Couldn't load #{url}: #{error}"
+      end
+    end
+
+    def dump_embed(url)
+      begin
+        yield Nokogiri::HTML.fragment(CGI.unescape(JSON.load(open(url))['html']))
+      rescue => error
+        puts "Couldn't load #{url}: #{error}"
+        # puts error.backtrace.join("\n")
       end
     end
   end
