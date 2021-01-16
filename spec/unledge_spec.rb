@@ -88,6 +88,7 @@ RSpec.describe Unledge do
         [ 'test/toot_pleroma.html', :scrape_pleroma, "Toot: “People will tell you to eat a dick but they'll never attach any dick recipes”" ],
         [ 'test/toot_pleroma_notice.html', :scrape_pleroma, "Toot: “People will tell you to eat a dick but they'll never attach any dick recipes”" ],
         [ 'test/toot_pleroma_media.html', :scrape_pleroma, "Toot: “yo, we found schrödinger's cat” ( https://social.redxen.eu/media/fa533eff7f67a037822de8eb638d70952f65f19b4a1f651d20118e710bebc903.jpg )" ],
+        [ 'test/toot_multiline_description.html', :scrape_toot, "Toot: it's time (sealab 2021: https://hackers.town/media/W__EQ7cswGwypHlbhMs )"],
     ]
 
     tests.each { |test|

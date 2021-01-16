@@ -114,7 +114,7 @@ module Unledge
           begin
             media = JSON.parse(media_gallery[0].attributes['data-props'].value)
             media_content = if media['media'][0]['description']
-                              "(#{media['media'][0]['description']}: #{media['media'][0]['text_url']} )"
+                              "(#{media['media'][0]['description'].gsub(/\n/, ' ')}: #{media['media'][0]['text_url']} )"
                             else
                               "( #{media['media'][0]['text_url']} )"
                             end
