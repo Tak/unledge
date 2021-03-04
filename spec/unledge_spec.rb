@@ -100,6 +100,7 @@ RSpec.describe Unledge do
     tests = [
       [ 'test/tweet_format3.json', :scrape_tweet_embed, 'Tweet: I really needed that. Thanks man. — WarPigeon (@JJWSCOTT)  June 3, 2020' ],
       [ 'test/tweet_embedded_video_format3.json', :scrape_tweet_embed, 'Tweet: Kitteh tries ice cream.  pic.twitter.com/TZEEpzkEWq  — Frostbit Desert Frogger (@BT0731)  June 3, 2020' ],
+      [ 'test/tweet_unescape.json', :scrape_tweet_embed, 'Tweet: The Biden Administration is recklessly releasing hundreds of illegal immigrants who have COVID into Texas communities.   The Biden Admin. must IMMEDIATELY end this callous act that exposes Texans & Americans to COVID. — Greg Abbott (@GregAbbott_TX)  March 3, 2021' ],
     ]
 
     tests.each { |test|

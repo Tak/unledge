@@ -155,7 +155,7 @@ module Unledge
 
     def scrape_tweet_embed(doc)
       begin
-        return "Tweet: #{strip_tags(doc.inner_html).strip()}"
+        return "Tweet: #{CGI.unescapeHTML(strip_tags(doc.inner_html)).strip()}"
       rescue => error
         puts "Error scraping content from tweet: #{error}"
         # puts error.backtrace.join("\n")
