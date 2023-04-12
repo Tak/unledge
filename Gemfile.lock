@@ -26,9 +26,9 @@ GEM
   specs:
     diff-lcs (1.4.4)
     json (2.5.1)
-    nokogiri (1.12.5-x86_64-linux)
+    nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
-    racc (1.5.2)
+    racc (1.6.2)
     rake (13.0.6)
     rexml (3.2.5)
     rspec (3.10.0)
